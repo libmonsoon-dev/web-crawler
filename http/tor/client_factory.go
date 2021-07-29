@@ -3,12 +3,13 @@ package tor
 import (
 	"context"
 	"fmt"
-	"net/http"
+	stdhttp "net/http"
 	"os"
 
 	"github.com/cretz/bine/tor"
 	"github.com/ipsn/go-libtor"
 
+	"github.com/libmonsoon-dev/web-crawler/http"
 	"github.com/libmonsoon-dev/web-crawler/logger"
 )
 
@@ -22,13 +23,13 @@ func (cf *ClientFactory) Close() error {
 }
 
 func (cf *ClientFactory) NewClient() *http.Client {
-	httpClient := &http.Client{
-		Transport: &http.Transport{
+	httpClient := &stdhttp.Client{
+		Transport: &stdhttp.Transport{
 			DialContext: cf.d.DialContext,
 		},
 	}
 
-	return httpClient
+	return http.NewClient(httpClient)
 }
 
 func NewClientFactory(ctx context.Context, logFactory logger.Factory) (*ClientFactory, error) {

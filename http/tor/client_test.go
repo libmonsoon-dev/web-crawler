@@ -3,8 +3,6 @@ package tor_test
 import (
 	"bytes"
 	"context"
-	"log"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -12,24 +10,24 @@ import (
 	"golang.org/x/net/html"
 
 	"github.com/libmonsoon-dev/web-crawler/http/tor"
+	"github.com/libmonsoon-dev/web-crawler/logger/logrus"
 )
 
 func TestClient(t *testing.T) {
 	if testing.Short() {
-		t.Skip("skipping in short mode.")
+		t.Skip("skipping tor client test in short mode.")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
-	logger := log.New(os.Stdout, "[TOR] ", log.Ltime)
-	factory, err := tor.NewClientFactory(ctx, logger)
+	factory, err := tor.NewClientFactory(ctx, logrus.NewFactory())
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer factory.Close()
 
-	resp, err := factory.NewClient().Get("https://check.torproject.org")
+	resp, err := factory.NewClient().Get(ctx, "https://check.torproject.org")
 	if err != nil {
 		t.Fatal(err)
 	}
