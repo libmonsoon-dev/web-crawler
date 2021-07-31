@@ -11,7 +11,9 @@ import (
 	"github.com/libmonsoon-dev/web-crawler/http/tor"
 	"github.com/libmonsoon-dev/web-crawler/logger"
 	"github.com/libmonsoon-dev/web-crawler/logger/logrus"
-	"github.com/libmonsoon-dev/web-crawler/run"
+	"github.com/libmonsoon-dev/web-crawler/runner"
+	"github.com/libmonsoon-dev/web-crawler/storage"
+	"github.com/libmonsoon-dev/web-crawler/urlsource"
 )
 
 func main() {
@@ -34,9 +36,13 @@ func Main(logFactory logger.Factory) error {
 	}
 	defer clientFactory.Close()
 
+	urlRepository := storage.URLRepository(nil) // TODO
+	urlSource := urlsource.NewWorker(logFactory, urlRepository)
+
 	c := crawler.NewCrawler(
 		logFactory,
 		clientFactory,
+		urlSource,
 	)
-	return run.Errorf("crawler", c).Run(ctx)
+	return runner.Errorf("crawler", c).Run(ctx)
 }
