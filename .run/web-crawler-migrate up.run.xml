@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="web-crawler-migrate up" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="web-crawler" />
+    <working_directory value="$PROJECT_DIR$" />
+    <parameters value="-cmd up" />
+    <kind value="PACKAGE" />
+    <package value="github.com/libmonsoon-dev/web-crawler/cmd/web-crawler-migrate" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/cmd/web-crawler-migrate/main.go" />
+    <method v="2" />
+  </configuration>
+</component>
